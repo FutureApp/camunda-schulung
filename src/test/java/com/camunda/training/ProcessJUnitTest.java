@@ -40,7 +40,7 @@ public class ProcessJUnitTest {
 
         Map<String, Object> approvedMap = new HashMap<>();
         approvedMap.put("approved", true);
-        taskService().complete(task.getId(), approvedMap); // Führt den Task zu Ende
+        taskService().complete(task.getId(), withVariables("approved", true)); // Führt den Task zu Ende
 
         assertThat(processInstance).isEnded();
     }
