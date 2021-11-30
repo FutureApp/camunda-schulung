@@ -28,19 +28,9 @@ public class ProcessJUnitTest {
         // Make assertions on the process instance
         String msgPruefenTaskId = findId("Nachricht prüfen"); // Sucht die ID via den Namen
 
-        List<Task> taskList = taskService()
-                .createTaskQuery()
-                .taskCandidateGroup("management")
-                .processInstanceId(processInstance.getId())
-                .list();
-
-        assertThat(taskList).isNotNull();
-        assertThat(taskList).hasSize(1);
-        Task task = taskList.get(0);
-
-        Map<String, Object> approvedMap = new HashMap<>();
-        approvedMap.put("approved", true);
-        taskService().complete(task.getId(), withVariables("approved", true)); // Führt den Task zu Ende
+        assertThat(processInstance).isWaitingAt("Activity_Message_Checking");
+        assertThat(processInstance).task().hasCandidateGroup("management");
+        complete(task(), withVariables("approved", true));
 
         assertThat(processInstance).isEnded();
     }
