@@ -8,11 +8,13 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
+import java.util.UUID;
+
 public class CreateTweetDelegate implements JavaDelegate {
     private final Logger LOGGER = LoggerFactory.getLogger(CreateTweetDelegate.class.getName());
 
     public void execute(DelegateExecution execution) throws Exception {
-        String content = "I did it, team! Cheers YOUR NAME HERE <<<< MY NAME";
+        String content = "I did it, team! Cheers " + UUID.randomUUID() + " <<<< MY NAME";
         LOGGER.info("Publishing tweet: " + content);
         AccessToken accessToken = new AccessToken("220324559-jet1dkzhSOeDWdaclI48z5txJRFLCnLOK45qStvo", "B28Ze8VDucBdiE38aVQqTxOyPc7eHunxBVv7XgGim4say");
         Twitter twitter = new TwitterFactory().getInstance();
