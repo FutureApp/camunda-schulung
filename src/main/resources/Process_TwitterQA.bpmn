@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0x0nb0d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="TwitterQAProcess" name="Twitter QA" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_Twitter_Message_Input" name="Twitter Nachricht empfangen">
+      <bpmn:outgoing>Flow_0fqdbpn</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0fqdbpn" sourceRef="StartEvent_Twitter_Message_Input" targetRef="Activity_Message_Checking" />
+    <bpmn:exclusiveGateway id="Gateway_Is_Twitter_Message_Okay" name="Nachricht okay?" default="Flow_1jwmaq3">
+      <bpmn:incoming>Flow_09tnx3j</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gibxpq</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1jwmaq3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_09tnx3j" sourceRef="Activity_Message_Checking" targetRef="Gateway_Is_Twitter_Message_Okay" />
+    <bpmn:sequenceFlow id="Flow_1gibxpq" name="ja" sourceRef="Gateway_Is_Twitter_Message_Okay" targetRef="Activity_Message_Publishen">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{approved == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1jwmaq3" name="nein" sourceRef="Gateway_Is_Twitter_Message_Okay" targetRef="Activity_Author_Inform_Message" />
+    <bpmn:endEvent id="Event_Twitter_Message_Published" name="Nachricht veröffentlicht">
+      <bpmn:incoming>Flow_0mfz04u</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mfz04u" sourceRef="Activity_Message_Publishen" targetRef="Event_Twitter_Message_Published" />
+    <bpmn:endEvent id="Event_Twitter_Message_Not_Published" name="Nachricht nicht veröffentlicht">
+      <bpmn:incoming>Flow_10o7tkj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_10o7tkj" sourceRef="Activity_Author_Inform_Message" targetRef="Event_Twitter_Message_Not_Published" />
+    <bpmn:scriptTask id="Activity_Message_Publishen" name="Nachricht veröffentlichen" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1gibxpq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mfz04u</bpmn:outgoing>
+      <bpmn:script>print('Nachricht aussteuern');</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_Author_Inform_Message" name="Author informieren">
+      <bpmn:incoming>Flow_1jwmaq3</bpmn:incoming>
+      <bpmn:outgoing>Flow_10o7tkj</bpmn:outgoing>
+      <bpmn:script>print('no')</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:manualTask id="Activity_Message_Checking" name="Nachricht prüfen">
+      <bpmn:incoming>Flow_0fqdbpn</bpmn:incoming>
+      <bpmn:outgoing>Flow_09tnx3j</bpmn:outgoing>
+    </bpmn:manualTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="TwitterQAProcess">
+      <bpmndi:BPMNEdge id="Flow_10o7tkj_di" bpmnElement="Flow_10o7tkj">
+        <di:waypoint x="630" y="290" />
+        <di:waypoint x="692" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mfz04u_di" bpmnElement="Flow_0mfz04u">
+        <di:waypoint x="630" y="177" />
+        <di:waypoint x="692" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jwmaq3_di" bpmnElement="Flow_1jwmaq3">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="290" />
+        <di:waypoint x="530" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="455" y="243" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gibxpq_di" bpmnElement="Flow_1gibxpq">
+        <di:waypoint x="475" y="177" />
+        <di:waypoint x="530" y="177" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499" y="159" width="8" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09tnx3j_di" bpmnElement="Flow_09tnx3j">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fqdbpn_di" bpmnElement="Flow_0fqdbpn">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_Twitter_Message_Input">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="202" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0by2ker_di" bpmnElement="Gateway_Is_Twitter_Message_Okay" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="411" y="122" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rhn4rq_di" bpmnElement="Event_Twitter_Message_Published">
+        <dc:Bounds x="692" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="679" y="202" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sz7b21_di" bpmnElement="Event_Twitter_Message_Not_Published">
+        <dc:Bounds x="692" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="673" y="315" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11ku3wt_di" bpmnElement="Activity_Message_Publishen">
+        <dc:Bounds x="530" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zmnr2u_di" bpmnElement="Activity_Author_Inform_Message">
+        <dc:Bounds x="530" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1dnrshh_di" bpmnElement="Activity_Message_Checking">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
