@@ -21,8 +21,7 @@ public class ProcessJUnitTest {
         Map<String, Object> variables = new HashMap<String, Object>();
         // Start process with Java API and variables
         ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("TwitterQAProcess", variables);
-        // Make assertions on the process instance
-        String msgPruefenTaskId = findId("Nachricht prüfen"); // Sucht die ID via den Namen
+
 
         assertThat(processInstance).isWaitingAt("Activity_Message_Checking");
         assertThat(processInstance).task().hasCandidateGroup("management");
