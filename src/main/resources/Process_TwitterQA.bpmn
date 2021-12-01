@@ -28,7 +28,7 @@
       <bpmn:outgoing>Flow_10o7tkj</bpmn:outgoing>
       <bpmn:script>print('no')</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:serviceTask id="Activity_Message_Publishen" name="Nachricht veröffentlichen" camunda:class="com.camunda.training.CreateTweetDelegate">
+    <bpmn:serviceTask id="Activity_Message_Publishen" name="Nachricht veröffentlichen" camunda:asyncBefore="true" camunda:class="com.camunda.training.CreateTweetDelegate">
       <bpmn:incoming>Flow_1gibxpq</bpmn:incoming>
       <bpmn:outgoing>Flow_0mfz04u</bpmn:outgoing>
     </bpmn:serviceTask>
