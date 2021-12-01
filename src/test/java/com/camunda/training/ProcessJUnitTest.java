@@ -22,7 +22,6 @@ public class ProcessJUnitTest {
         // Start process with Java API and variables
         ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("TwitterQAProcess", variables);
 
-
         assertThat(processInstance).isWaitingAt("Activity_Message_Checking");
         assertThat(processInstance).task().hasCandidateGroup("management");
         complete(task(), withVariables("approved", true));

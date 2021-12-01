@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0x0nb0d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
   <bpmn:process id="TwitterQAProcess" name="Twitter QA" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_Twitter_Message_Input" name="Twitter Nachricht empfangen">
+    <bpmn:startEvent id="StartEvent_Twitter_Message_Input" name="Twitter Nachricht empfangen" camunda:formKey="embedded:app:forms/formCheckMessageTask.html">
       <bpmn:outgoing>Flow_0fqdbpn</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0fqdbpn" sourceRef="StartEvent_Twitter_Message_Input" targetRef="Activity_Message_Checking" />
@@ -32,7 +32,7 @@
       <bpmn:incoming>Flow_1gibxpq</bpmn:incoming>
       <bpmn:outgoing>Flow_0mfz04u</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_Message_Checking" name="Nachricht prüfen" camunda:candidateGroups="management">
+    <bpmn:userTask id="Activity_Message_Checking" name="Nachricht prüfen" camunda:formKey="embedded:app:forms/formCheckMessageTask.html" camunda:candidateGroups="management">
       <bpmn:incoming>Flow_0fqdbpn</bpmn:incoming>
       <bpmn:outgoing>Flow_09tnx3j</bpmn:outgoing>
     </bpmn:userTask>
