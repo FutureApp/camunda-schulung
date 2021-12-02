@@ -23,11 +23,6 @@
       <bpmn:incoming>Flow_10o7tkj</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_10o7tkj" sourceRef="Activity_Author_Inform_Message" targetRef="Event_Twitter_Message_Not_Published" />
-    <bpmn:scriptTask id="Activity_Author_Inform_Message" name="Author informieren">
-      <bpmn:incoming>Flow_1jwmaq3</bpmn:incoming>
-      <bpmn:outgoing>Flow_10o7tkj</bpmn:outgoing>
-      <bpmn:script>print('no')</bpmn:script>
-    </bpmn:scriptTask>
     <bpmn:serviceTask id="Activity_Message_Publishen" name="Nachricht veröffentlichen" camunda:asyncBefore="true" camunda:class="com.camunda.training.CreateTweetDelegate">
       <bpmn:incoming>Flow_1gibxpq</bpmn:incoming>
       <bpmn:outgoing>Flow_0mfz04u</bpmn:outgoing>
@@ -36,6 +31,10 @@
       <bpmn:incoming>Flow_0fqdbpn</bpmn:incoming>
       <bpmn:outgoing>Flow_09tnx3j</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_Author_Inform_Message" name="Author informieren" camunda:type="external" camunda:topic="notification">
+      <bpmn:incoming>Flow_1jwmaq3</bpmn:incoming>
+      <bpmn:outgoing>Flow_10o7tkj</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="TwitterQAProcess">
@@ -94,14 +93,14 @@
           <dc:Bounds x="673" y="315" width="74" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0zmnr2u_di" bpmnElement="Activity_Author_Inform_Message">
-        <dc:Bounds x="530" y="250" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1uj0k4q_di" bpmnElement="Activity_Message_Publishen">
         <dc:Bounds x="530" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ccpyif_di" bpmnElement="Activity_Message_Checking">
         <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17pw2mx_di" bpmnElement="Activity_Author_Inform_Message">
+        <dc:Bounds x="530" y="250" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

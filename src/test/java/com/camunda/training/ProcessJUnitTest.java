@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.complete;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.execute;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.externalTask;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.findId;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.jobQuery;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
@@ -63,6 +64,12 @@ public class ProcessJUnitTest {
                 .setVariables(varMap)
                 .startAfterActivity(findId("Nachricht prüfen"))
                 .execute();
+
+        BpmnAwareTests.assertThat(processInstance)
+                .isWaitingAt(findId("Send notification"))
+                .externalTask()
+                .hasTopicName("notifications");
+        BpmnAwareTests.complete(externalTask());
 
 
         BpmnAwareTests.assertThat(processInstance).isEnded().hasPassed(findId("Author informieren"));
