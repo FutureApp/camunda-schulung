@@ -78,7 +78,7 @@ public class ProcessJUnitTest {
 
     @Test
     @Deployment(resources = "Process_TwitterQA.bpmn")
-    public void testMSG() {
+    public void testMSGStart() {
         ProcessInstance processInstance = runtimeService()
                 .createMessageCorrelation("superuserTweet")
                 .setVariable("content", "My Exercise 11 Tweet (HelloWorld)- " + System.currentTimeMillis())
@@ -86,11 +86,32 @@ public class ProcessJUnitTest {
                 .getProcessInstance();
 
 
+        // get the job
+        List<Job> jobList = jobQuery()
+                .processInstanceId(processInstance.getId())
+                .list();
+
+        // execute the job
+        assert jobList.size() == 1;
+        Job job = jobList.get(0);
+        execute(job);
+
+        BpmnAwareTests.assertThat(processInstance).isEnded();
+        BpmnAwareTests.assertThat(processInstance).isStarted();
+    }
+    @Test
+    @Deployment(resources="Process_TwitterQA.bpmn")
+    public void testTweetWithdrawn() {
+        Map<String, Object> varMap = new HashMap<>();
+        varMap.put("content", "Test tweetWithdrawn message");
+        ProcessInstance processInstance = runtimeService()
+                .startProcessInstanceByKey("TwitterQAProcess", varMap);
+        BpmnAwareTests.assertThat(processInstance).isStarted().isWaitingAt(findId("Nachricht prüfen"));
         runtimeService()
                 .createMessageCorrelation("tweetWithdrawn")
+                .processInstanceVariableEquals("content", "Test tweetWithdrawn message")
                 .correlateWithResult();
-
-        BpmnAwareTests.assertThat(processInstance).isStarted();
+        BpmnAwareTests.assertThat(processInstance).isEnded();
     }
 
 }
