@@ -76,4 +76,21 @@ public class ProcessJUnitTest {
 
     }
 
+    @Test
+    @Deployment(resources = "Process_TwitterQA.bpmn")
+    public void testMSG() {
+        ProcessInstance processInstance = runtimeService()
+                .createMessageCorrelation("superuserTweet")
+                .setVariable("content", "My Exercise 11 Tweet (HelloWorld)- " + System.currentTimeMillis())
+                .correlateWithResult()
+                .getProcessInstance();
+
+
+        runtimeService()
+                .createMessageCorrelation("tweetWithdrawn")
+                .correlateWithResult();
+
+        BpmnAwareTests.assertThat(processInstance).isStarted();
+    }
+
 }
